@@ -8,17 +8,15 @@
  * Date: 12/9/2017
  * Time: 1:17 AM
  */
-include "DAL/role.php";
-include "DAL/securityuser.php";
+include "DAL/customer.php";
 include "Utilities/Authentication.php";
 session_start();
-if(SessionManager::getSecurityUserId() == 0){
-    header("location: admin-login.php");
-}
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $returnVal = true;
     isset($_POST["email"]) && $_POST["email"] != "" ? $email = $_POST["email"] : $returnVal = false;
-    isset($_POST["username"]) && $_POST["username"] != "" ? $username = $_POST["username"] : $returnVal = false;
+    isset($_POST["firstname"]) && $_POST["firstname"] != "" ? $firstname = $_POST["firstname"] : $returnVal = false;
+    isset($_POST["lastname"]) && $_POST["lastname"] != "" ? $lastname = $_POST["lastname"] : $returnVal = false;
     isset($_POST["password"]) && $_POST["password"] != "" ? $password = $_POST["password"] : $returnVal = false;
     if(isset($_POST["confirmpassword"]) && $_POST["confirmpassword"] == $password){
         isset($_POST["confirmpassword"]) && $_POST["confirmpassword"] != "" ? $confirmpassword = $_POST["confirmpassword"] : $returnVal = false;
@@ -28,25 +26,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $validationMsg = "Passwords did not match.";
     }
 
-    isset($_POST["role"]) && $_POST["role"] > 0 ? $roleid = $_POST["role"] : $returnVal = false;
     if($returnVal){
-        $securityuser = Securityuser::lookup($username);
-        if ($securityuser != null) {
+        $customer = Customer::lookup($email);
+        if ($customer != null) {
             // This email is already taken
-            $errorMessage = "The provided username is already in use. Please try another username.";
+            $errorMessage = "The provided email is already in use. Please try another email.";
         }
         else {
             $currentDate = date('Y-m-d H:i:s');
-            $securityuser = Authentication::createSecurityUser($username, $password, $email, $roleid,$currentDate);
-            if ($securityuser == null) {
+            $customer = Authentication::createCustomer($firstname, $lastname, $email, $password, $currentDate);
+            if ($customer == null) {
                 // Something went wrong while attempting to create this user
                 $validationMsg = "An error occurred during the creation of this security user. Please try again. If the problem continues, contact OpenDevTools support at opendevtools@gmail.com";
             }
             else {
                 // Set session values for successful login
-                SessionManager::setSecurityUserId($securityuser->getId());
-                SessionManager::setRoleId($securityuser->getRoleId());
-                SessionManager::setUsername($securityuser->getUsername());
+                SessionManager::setCustomerId($customer->getId());
+                SessionManager::setFirstName($customer->getFirstName());
                 // Redirect to Dashboard
                 header("location: dashboard.php");
             }
@@ -63,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <?php include "head.php" ?>
 
-<body class="bg-light" id="page-top">
+<body class="bg-dark" id="page-top">
 <?php include "navbar.php" ?>
 <div class="container">
     <?php if(isset($validationMsg)) { ?>
@@ -78,36 +74,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <div class="card mx-auto mt-5">
-                <div class="card-header">Create Security User</div>
+                <div class="card-header">Create Account</div>
                 <div class="card-body">
                     <form method="post">
                         <div class="form-group">
-                            <label for="username">Email Address</label>
-                            <input class="form-control" id="email" name="email" type="email" placeholder="Email Address">
-                        </div>
-                        <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
-                                    <label for="username">Username</label>
-                                    <input class="form-control" id="username" name="username" type="text" placeholder="Username">
+                                    <label for="username">First Name</label>
+                                    <input class="form-control" id="firstname" name="firstname" type="text" placeholder="First Name">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="exampleConfirmPassword">Role</label>
-                                    <select class="form-control" name="role">
-                                        <option value="0">--Select Role--</option>
-                                        <?php
-                                        $roleList = Role::loadall();
-                                        if(!empty($roleList)){
-                                            foreach ($roleList as $role) {
-                                            ?>
-                                                <option value="<?php echo $role->getId() ?>"><?php echo $role->getName() ?></option>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </select>
+                                    <label for="username">Last Name</label>
+                                    <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Last Name">
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Email Address</label>
+                            <input class="form-control" id="email" name="email" type="email" placeholder="Email Address">
                         </div>
                         <div class="form-group">
                             <div class="form-row">

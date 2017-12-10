@@ -9,10 +9,10 @@ session_start();
 include_once("Utilities/Authentication.php");
 $errorMessage = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    isset($_POST["username"]) && $_POST["username"] != "" ? $username = $_POST["username"] : $returnVal = false;
+    isset($_POST["email"]) && $_POST["email"] != "" ? $email = $_POST["email"] : $returnVal = false;
     isset($_POST["password"]) && $_POST["password"] != "" ? $password = $_POST["password"] : $returnVal = false;
 
-    $success = Authentication::authLogin($username,$password);
+    $success = Authentication::customerLogin($email,$password);
     if ($success)
     {
         header("location: dashboard.php");
@@ -44,12 +44,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
             <div class="card mx-auto mt-5">
-                <div class="card-header">Security User Login</div>
+                <div class="card-header">Customer Login</div>
                 <div class="card-body">
                     <form method="post">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Username</label>
-                            <input class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter Username">
+                            <label for="exampleInputEmail1">Email</label>
+                            <input class="form-control" id="email" name="email" type="email" aria-describedby="emailHelp" placeholder="Enter Username">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>

@@ -1,10 +1,22 @@
+<?php
+include "DAL/cart.php";
+include "DAL/cartitem.php";
+include "DAL/statustype.php";
+session_start();
+include "Utilities/SessionManager.php";
+include "DAL/subscription.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <?php include "head.php" ?>
 
   <body id="page-top">
-
+<style>
+    .portfolio-item .caption {
+        background: none;
+    }
+</style>
   <!-- Navigation -->
   <a class="menu-toggle rounded" href="#">
       <i class="fa fa-bars"></i>
@@ -27,7 +39,7 @@
               <a class="js-scroll-trigger" href="#portfolio">Portfolio</a>
           </li>
           <li class="sidebar-nav-item">
-              <a class="js-scroll-trigger" href="#contact">Contact</a>
+              <a class="js-scroll-trigger" href="#footer">Contact</a>
           </li>
       </ul>
   </nav>
@@ -35,11 +47,24 @@
     <!-- Header -->
     <header class="masthead d-flex">
       <div class="container text-center my-auto">
-        <h1 class="mb-1">Top Crypto Picks</h1>
-        <h3 class="mb-5">
+        <h1 class="mb-1 white">Top Crypto Picks</h1>
+        <h3 class="mb-5 white">
           <em>Subscribe for our latest updates</em>
         </h3>
-        <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+        <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Learn More</a>
+          <?php
+          if(SessionManager::getCustomerId() == 0 && SessionManager::getSecurityUserId() == 0 ){
+              ?>
+              <a class="btn btn-dark btn-xl js-scroll-trigger" href="login.php">Login</a>
+              <?php
+          }
+          else{
+              ?>
+              <a class="btn btn-dark btn-xl js-scroll-trigger" href="dashboard.php">Dashboard</a>
+              <?php
+          }
+          ?>
+
       </div>
       <div class="overlay"></div>
     </header>
@@ -49,9 +74,11 @@
       <div class="container text-center">
         <div class="row">
           <div class="col-lg-10 mx-auto">
-            <h2>Stylish Portfolio is the perfect theme for your next project!</h2>
-            <p class="lead mb-5">This theme features a flexible, UX friendly sidebar menu and stock photos from our friends at
-              <a href="https://unsplash.com/">Unsplash</a>!</p>
+            <h2>Cryptocurrency. Investment. Research.</h2>
+            <p class="lead mb-5">
+                Crypto-Trading is the act of buying and selling cryptocurrencies through an exchange (trading platform).
+                The term “crypto” is the prefix for the word cryptography; which is the structure of techniques that secret writing, especially code and cipher systems that is sometimes used to decentralize systems for security purposes.
+            </p>
             <a class="btn btn-dark btn-xl js-scroll-trigger" href="#services">What We Offer</a>
           </div>
         </div>
@@ -62,8 +89,8 @@
     <section class="content-section bg-primary text-white text-center" id="services">
       <div class="container">
         <div class="content-section-heading">
-          <h3 class="text-secondary mb-0">Services</h3>
-          <h2 class="mb-5">What We Offer</h2>
+          <h3 class="text-dark mb-0">Services</h3>
+          <h2 class="mb-5 white">What We Offer</h2>
         </div>
         <div class="row">
           <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
@@ -71,7 +98,7 @@
               <i class="icon-screen-smartphone"></i>
             </span>
             <h4>
-              <strong>Responsive</strong>
+              <strong>Subscriptions</strong>
             </h4>
             <p class="text-faded mb-0">Looks great on any screen size!</p>
           </div>
@@ -80,7 +107,7 @@
               <i class="icon-pencil"></i>
             </span>
             <h4>
-              <strong>Redesigned</strong>
+              <strong>Insight</strong>
             </h4>
             <p class="text-faded mb-0">Freshly redesigned for Bootstrap 4.</p>
           </div>
@@ -89,7 +116,7 @@
               <i class="icon-like"></i>
             </span>
             <h4>
-              <strong>Favorited</strong>
+              <strong>An Edge</strong>
             </h4>
             <p class="text-faded mb-0">Millions of users
               <i class="fa fa-heart"></i>
@@ -100,7 +127,7 @@
               <i class="icon-mustache"></i>
             </span>
             <h4>
-              <strong>Question</strong>
+              <strong>Financial Independence</strong>
             </h4>
             <p class="text-faded mb-0">I mustache you a question...</p>
           </div>
@@ -111,10 +138,21 @@
     <!-- Callout -->
     <section class="callout">
       <div class="container text-center">
-        <h2 class="mx-auto mb-5">Welcome to
+        <h2 class="mx-auto mb-5 white">Welcome to
           <em>your</em>
           next website!</h2>
-        <a class="btn btn-primary btn-xl" href="https://startbootstrap.com/template-overviews/stylish-portfolio/">Download Now!</a>
+          <?php
+          if(SessionManager::getCustomerId() == 0 && SessionManager::getSecurityUserId() == 0 ){
+              ?>
+              <a class="btn btn-primary btn-xl js-scroll-trigger" href="login.php">Login</a>
+              <?php
+          }
+          else{
+              ?>
+              <a class="btn btn-primary btn-xl js-scroll-trigger" href="dashboard.php">Dashboard</a>
+              <?php
+          }
+          ?>
       </div>
     </section>
 
@@ -122,54 +160,44 @@
     <section class="content-section" id="portfolio">
       <div class="container">
         <div class="content-section-heading text-center">
-          <h3 class="text-secondary mb-0">Portfolio</h3>
-          <h2 class="mb-5">Recent Projects</h2>
+          <h3 class="text-dark mb-0">Our bread and butter</h3>
+          <h2 class="mb-5">SUBSCRIPTIONS</h2>
         </div>
         <div class="row no-gutters">
-          <div class="col-lg-6">
-            <a class="portfolio-item" href="#">
+          <!--<div class="col-lg-6">
+            <a class="portfolio-item" data-toggle="modal" data-target="#myModal">
               <span class="caption">
                 <span class="caption-content">
-                  <h2>Stationary</h2>
-                  <p class="mb-0">A yellow pencil with envelopes on a clean, blue backdrop!</p>
+                  <h1 class="white">DAILY: $25</h1>
+                  <p class="mb-0">1 Calendar Day – All Sports Picks</p>
                 </span>
               </span>
               <img class="img-fluid" src="img/portfolio-1.jpg" alt="">
             </a>
-          </div>
-          <div class="col-lg-6">
-            <a class="portfolio-item" href="#">
-              <span class="caption">
-                <span class="caption-content">
-                  <h2>Ice Cream</h2>
-                  <p class="mb-0">A dark blue background with a colored pencil, a clip, and a tiny ice cream cone!</p>
-                </span>
-              </span>
-              <img class="img-fluid" src="img/portfolio-2.jpg" alt="">
-            </a>
-          </div>
-          <div class="col-lg-6">
-            <a class="portfolio-item" href="#">
-              <span class="caption">
-                <span class="caption-content">
-                  <h2>Strawberries</h2>
-                  <p class="mb-0">Strawberries are such a tasty snack, especially with a little sugar on top!</p>
-                </span>
-              </span>
-              <img class="img-fluid" src="img/portfolio-3.jpg" alt="">
-            </a>
-          </div>
-          <div class="col-lg-6">
-            <a class="portfolio-item" href="#">
-              <span class="caption">
-                <span class="caption-content">
-                  <h2>Workspace</h2>
-                  <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
-                </span>
-              </span>
-              <img class="img-fluid" src="img/portfolio-4.jpg" alt="">
-            </a>
-          </div>
+          </div>-->
+            <?php
+            $subscriptionList = Subscription::loadall();
+            if(!empty($subscriptionList)){
+                foreach ($subscriptionList as $subscription){
+                    ?>
+                    <div class="col-md-4">
+                        <a class="portfolio-item" href="view-subscription.php?id=<?php echo $subscription->getId() ?>">
+                          <span class="caption">
+                                <span class="caption-content text-center">
+
+                                </span>
+                          </span>
+                            <img class="img-fluid" src="<?php echo $subscription->getImgUrl(); ?>" alt="">
+                        </a>
+                        <span class="caption-content text-center">
+                          <h1 class="text-primary"><?php echo $subscription->getName(); ?></h1>
+                          <p class="mb-0"><?php echo $subscription->getDescription(); ?></p>
+                        </span>
+                    </div>
+            <?php
+                }
+            }
+            ?>
         </div>
       </div>
     </section>
@@ -177,53 +205,38 @@
     <!-- Call to Action -->
     <section class="content-section bg-primary text-white">
       <div class="container text-center">
-        <h2 class="mb-4">The buttons below are impossible to resist...</h2>
-        <a href="#" class="btn btn-xl btn-light mr-4">Click Me!</a>
-        <a href="#" class="btn btn-xl btn-dark">Look at Me!</a>
+          <?php
+          if(SessionManager::getCustomerId() == 0 && SessionManager::getSecurityUserId() == 0 ){
+              ?>
+              <h2 class="white">What are you waiting for?</h2>
+              <h5 class="mb-4 white">Get started today!</h5>
+              <a href="login.php" class="btn btn-xl btn-light mr-4">Login</a>
+              <a href="create-customer.php" class="btn btn-xl btn-dark">Register</a>
+              <?php
+          }
+          else{
+              ?>
+              <h2 class="white">What are you waiting for?</h2>
+              <h5 class="mb-4 white">Checkout the latest cryptocurrencies!</h5>
+              <a href="dashboard.php" class="btn btn-xl btn-light mr-4">Dashboard</a>
+          <?php
+          }
+          ?>
+
       </div>
     </section>
 
-    <!-- Map -->
+    <!-- Map
     <section id="contact" class="map">
       <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
       <br/>
       <small>
         <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
       </small>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer text-center">
-      <div class="container">
-        <ul class="list-inline mb-5">
-          <li class="list-inline-item">
-            <a class="social-link rounded-circle text-white mr-3" href="#">
-              <i class="icon-social-facebook"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a class="social-link rounded-circle text-white mr-3" href="#">
-              <i class="icon-social-twitter"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a class="social-link rounded-circle text-white" href="#">
-              <i class="icon-social-github"></i>
-            </a>
-          </li>
-        </ul>
-          <a href="admin-login.php">Admin Login</a>
-        <p class="text-muted small mb-0">Copyright &copy; Your Website 2017</p>
-      </div>
-    </footer>
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
-      <i class="fa fa-angle-up"></i>
-    </a>
-
+    </section> -->
+  <?php include "footer.php" ?>
 <?php include "scripts.php" ?>
-
+<?php include "modal.php" ?>
   </body>
 
 </html>

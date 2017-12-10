@@ -7,6 +7,7 @@
 
 include_once("SessionManager.php");
 include_once("DAL/securityuser.php");
+include_once("DAL/customer.php");
 
 class Authentication
 {
@@ -25,7 +26,6 @@ class Authentication
             return false;
         }
     }
-
     public static function createSecurityUser($paramUsername,$paramPassword,$paramEmail, $paramRoleId, $paramCreateDate) {
         // Create password using the code below to generate a hash
 
@@ -53,6 +53,32 @@ class Authentication
         $securityuser = new Securityuser($paramSecurityUserId);
         $securityuser->setPassword($hash);
         $securityuser->save();
+    }
+    public static function customerLogin($username,$password) {
+
+        $customer = Customer::lookup($username);
+        if($customer != null && password_verify($password, $customer->getPassword())) {
+            SessionManager::setCustomerId($customer->getId());
+            SessionManager::setFirstName($customer->getFirstName());
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public static function createCustomer($paramFirstName,$paramLastName,$paramEmail, $paramPassword, $paramCreateDate) {
+        // Create password using the code below to generate a hash
+
+        $options = [
+            'cost' => 10,
+            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+        ];
+        $hash = password_hash($paramPassword, PASSWORD_BCRYPT, $options);
+
+        $customer = new Customer(0,$paramFirstName,$paramLastName,$paramEmail, $hash, $paramCreateDate);
+        $customer->save();
+
+        return $customer;
     }
 }
 
