@@ -31,14 +31,14 @@ DROP PROCEDURE IF EXISTS `topcryptopicks`.`usp_cartitem_Search`;
 
 CREATE TABLE `topcryptopicks`.`cartitem` (
 Id INT AUTO_INCREMENT,
-CardId INT,
+cartId INT,
 SubscriptionId INT,
 AddDate DATETIME,
 Quantity INT,
 SubscriptionStartDate DATE,
 SubscriptionEndDate DATE,
 CONSTRAINT pk_cartitem_Id PRIMARY KEY (Id),
-CONSTRAINT fk_cartitem_CardId_cart_Id FOREIGN KEY (CardId) REFERENCES cart (Id),
+CONSTRAINT fk_cartitem_cartId_cart_Id FOREIGN KEY (cartId) REFERENCES cart (Id),
 CONSTRAINT fk_cartitem_SubscriptionId_subscription_Id FOREIGN KEY (SubscriptionId) REFERENCES subscription (Id)
 );
 
@@ -56,7 +56,7 @@ CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Load`
 BEGIN
 	SELECT
 		`cartitem`.`Id` AS `Id`,
-		`cartitem`.`CardId` AS `CardId`,
+		`cartitem`.`cartId` AS `cartId`,
 		`cartitem`.`SubscriptionId` AS `SubscriptionId`,
 		`cartitem`.`AddDate` AS `AddDate`,
 		`cartitem`.`Quantity` AS `Quantity`,
@@ -73,7 +73,7 @@ CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_LoadAll`
 BEGIN
 	SELECT
 		`cartitem`.`Id` AS `Id`,
-		`cartitem`.`CardId` AS `CardId`,
+		`cartitem`.`cartId` AS `cartId`,
 		`cartitem`.`SubscriptionId` AS `SubscriptionId`,
 		`cartitem`.`AddDate` AS `AddDate`,
 		`cartitem`.`Quantity` AS `Quantity`,
@@ -86,7 +86,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Add`
 (
-	 IN paramCardId INT,
+	 IN paramcartId INT,
 	 IN paramSubscriptionId INT,
 	 IN paramAddDate DATETIME,
 	 IN paramQuantity INT,
@@ -94,8 +94,8 @@ CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Add`
 	 IN paramSubscriptionEndDate DATE
 )
 BEGIN
-	INSERT INTO `cartitem` (CardId,SubscriptionId,AddDate,Quantity,SubscriptionStartDate,SubscriptionEndDate)
-	VALUES (paramCardId, paramSubscriptionId, paramAddDate, paramQuantity, paramSubscriptionStartDate, paramSubscriptionEndDate);
+	INSERT INTO `cartitem` (cartId,SubscriptionId,AddDate,Quantity,SubscriptionStartDate,SubscriptionEndDate)
+	VALUES (paramcartId, paramSubscriptionId, paramAddDate, paramQuantity, paramSubscriptionStartDate, paramSubscriptionEndDate);
 	-- Return last inserted ID as result
 	SELECT LAST_INSERT_ID() as id;
 END //
@@ -106,7 +106,7 @@ DELIMITER //
 CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Update`
 (
 	IN paramId INT,
-	IN paramCardId INT,
+	IN paramcartId INT,
 	IN paramSubscriptionId INT,
 	IN paramAddDate DATETIME,
 	IN paramQuantity INT,
@@ -115,7 +115,7 @@ CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Update`
 )
 BEGIN
 	UPDATE `cartitem`
-	SET CardId = paramCardId
+	SET cartId = paramcartId
 		,SubscriptionId = paramSubscriptionId
 		,AddDate = paramAddDate
 		,Quantity = paramQuantity
@@ -142,7 +142,7 @@ DELIMITER //
 CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Search`
 (
 	IN paramId INT,
-	IN paramCardId INT,
+	IN paramcartId INT,
 	IN paramSubscriptionId INT,
 	IN paramAddDate DATETIME,
 	IN paramQuantity INT,
@@ -152,7 +152,7 @@ CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_Search`
 BEGIN
 	SELECT
 		`cartitem`.`Id` AS `Id`,
-		`cartitem`.`CardId` AS `CardId`,
+		`cartitem`.`cartId` AS `cartId`,
 		`cartitem`.`SubscriptionId` AS `SubscriptionId`,
 		`cartitem`.`AddDate` AS `AddDate`,
 		`cartitem`.`Quantity` AS `Quantity`,
@@ -161,7 +161,7 @@ BEGIN
 	FROM `cartitem`
 	WHERE
 		COALESCE(cartitem.`Id`,0) = COALESCE(paramId,cartitem.`Id`,0)
-		AND COALESCE(cartitem.`CardId`,0) = COALESCE(paramCardId,cartitem.`CardId`,0)
+		AND COALESCE(cartitem.`cartId`,0) = COALESCE(paramcartId,cartitem.`cartId`,0)
 		AND COALESCE(cartitem.`SubscriptionId`,0) = COALESCE(paramSubscriptionId,cartitem.`SubscriptionId`,0)
 		AND COALESCE(CAST(cartitem.`AddDate` AS DATE), CAST(NOW() AS DATE)) = COALESCE(CAST(paramAddDate AS DATE),CAST(cartitem.`AddDate` AS DATE), CAST(NOW() AS DATE))
 		AND COALESCE(cartitem.`Quantity`,0) = COALESCE(paramQuantity,cartitem.`Quantity`,0)

@@ -15,12 +15,41 @@ include "DAL/cart.php";
 include "DAL/cartitem.php";
 include "Utilities/SessionManager.php";
 session_start();
-
+$customerId = SessionManager::getCustomerId();
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     if(isset($_GET["id"]) && $_GET["id"] > 0){
         $id = $_GET["id"];
         $subscription = new Subscription();
         $subscription->load($id);
+    }
+}
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    if(isset($_POST["btnSubscribe"])){
+        $hfsubscriptionid = $_POST["hfSubscriptionId"];
+        $currentDate = date('Y-m-d H:i:s');
+
+
+        $foundcart = Cart::loadbycustomerid($customerId);
+        //do cart search with customer id
+        $cartid = 0;
+        if($foundcart != null){
+            //use this cart id for item;
+            $cartid = $foundcart->getId();
+            $cartitem = new Cartitem(0,$cartid,$hfsubscriptionid, $currentDate,1,null,null);
+            $cartitem->save();
+            header("location: online-cart.php?id=$cartid");
+        }
+        else{
+            //add item to cart
+            $cart = new Cart(0,$customerId,4,$currentDate,null);
+            $cart->save();
+            $cartid = $cart->getId();
+            $cartitem = new Cartitem(0,$cartid,$hfsubscriptionid, $currentDate,1,null,null);
+            $cartitem->save();
+            header("location: online-cart.php?id=$cartid");
+        }
+
     }
 }
 ?>
@@ -80,7 +109,21 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                         4.0 stars
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-primary" href="online-cart.php">Subscribe</a>
+                        <?php if($customerId > 0) {
+                            ?>
+                            <form method="post">
+                                <input type="hidden" name="hfSubscriptionId" value="<?php echo $subscription->getId(); ?>">
+                                <button type="submit" name="btnSubscribe" id="btnSubscribe" class="btn btn-primary">Subscribe</button>
+                            </form>
+                            <?php
+                        }
+                        else{
+                            ?>
+                            <a class="btn btn-primary" href="create-customer.php"><i class="icon-plus"></i> Subscribe</a>
+                            <?php
+                        }
+                        ?>
+
                     </div>
                 </div>
                 <!-- /.card -->

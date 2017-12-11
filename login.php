@@ -58,6 +58,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
+                    <div class="text-center">
+                        <a class="d-block small mt-3" href="create-customer.php">Create Customer</a>
+                    </div>
                 </div>
             </div>
         </div>

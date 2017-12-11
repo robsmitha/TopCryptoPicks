@@ -18,7 +18,7 @@ class Cartitem {
 	/******************************************************************/
 
 	protected $Id;
-	protected $CardId;
+	protected $cartId;
 	protected $SubscriptionId;
 	protected $AddDate;
 	protected $Quantity;
@@ -46,7 +46,7 @@ class Cartitem {
 
 	public function __constructBase() {
 		$this->Id = 0;
-		$this->CardId = 0;
+		$this->cartId = 0;
 		$this->SubscriptionId = 0;
 		$this->AddDate = "";
 		$this->Quantity = 0;
@@ -60,9 +60,9 @@ class Cartitem {
 	}
 
 
-	public function __constructFull($paramId,$paramCardId,$paramSubscriptionId,$paramAddDate,$paramQuantity,$paramSubscriptionStartDate,$paramSubscriptionEndDate) {
+	public function __constructFull($paramId,$paramcartId,$paramSubscriptionId,$paramAddDate,$paramQuantity,$paramSubscriptionStartDate,$paramSubscriptionEndDate) {
 		$this->Id = $paramId;
-		$this->CardId = $paramCardId;
+		$this->cartId = $paramcartId;
 		$this->SubscriptionId = $paramSubscriptionId;
 		$this->AddDate = $paramAddDate;
 		$this->Quantity = $paramQuantity;
@@ -81,11 +81,11 @@ class Cartitem {
 	public function setId($value){
 		$this->Id = $value;
 	}
-	public function getCardId(){
-		return $this->CardId;
+	public function getcartId(){
+		return $this->cartId;
 	}
-	public function setCardId($value){
-		$this->CardId = $value;
+	public function setcartId($value){
+		$this->cartId = $value;
 	}
 	public function getSubscriptionId(){
 		return $this->SubscriptionId;
@@ -136,7 +136,7 @@ class Cartitem {
 
 		while ($row = $result->fetch_assoc()) {
 		 $this->setId($row['Id']);
-		 $this->setCardId($row['CardId']);
+		 $this->setcartId($row['cartId']);
 		 $this->setSubscriptionId($row['SubscriptionId']);
 		 $this->setAddDate($row['AddDate']);
 		 $this->setQuantity($row['Quantity']);
@@ -163,7 +163,7 @@ class Cartitem {
 		include(self::getDbSettings());
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		$stmt = $conn->prepare('CALL usp_cartitem_Add(?,?,?,?,?,?)');
-		$arg1 = $this->getCardId();
+		$arg1 = $this->getcartId();
 		$arg2 = $this->getSubscriptionId();
 		$arg3 = $this->getAddDate();
 		$arg4 = $this->getQuantity();
@@ -186,7 +186,7 @@ class Cartitem {
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		$stmt = $conn->prepare('CALL usp_cartitem_Update(?,?,?,?,?,?,?)');
 		$arg1 = $this->getId();
-		$arg2 = $this->getCardId();
+		$arg2 = $this->getcartId();
 		$arg3 = $this->getSubscriptionId();
 		$arg4 = $this->getAddDate();
 		$arg5 = $this->getQuantity();
@@ -220,7 +220,7 @@ class Cartitem {
 		if ($result->num_rows > 0) {
 			$arr = array();
 			while ($row = $result->fetch_assoc()) {
-				$cartitem = new Cartitem($row['Id'],$row['CardId'],$row['SubscriptionId'],$row['AddDate'],$row['Quantity'],$row['SubscriptionStartDate'],$row['SubscriptionEndDate']);
+				$cartitem = new Cartitem($row['Id'],$row['cartId'],$row['SubscriptionId'],$row['AddDate'],$row['Quantity'],$row['SubscriptionStartDate'],$row['SubscriptionEndDate']);
 				$arr[] = $cartitem;
 			}
 			return $arr;
@@ -240,12 +240,12 @@ class Cartitem {
 	}
 
 
-	public static function search($paramId,$paramCardId,$paramSubscriptionId,$paramAddDate,$paramQuantity,$paramSubscriptionStartDate,$paramSubscriptionEndDate) {
+	public static function search($paramId,$paramcartId,$paramSubscriptionId,$paramAddDate,$paramQuantity,$paramSubscriptionStartDate,$paramSubscriptionEndDate) {
 		include(self::getDbSettings());
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		$stmt = $conn->prepare('CALL usp_cartitem_Search(?,?,?,?,?,?,?)');
 		$arg1 = Cartitem::setNullValue($paramId);
-		$arg2 = Cartitem::setNullValue($paramCardId);
+		$arg2 = Cartitem::setNullValue($paramcartId);
 		$arg3 = Cartitem::setNullValue($paramSubscriptionId);
 		$arg4 = Cartitem::setNullValue($paramAddDate);
 		$arg5 = Cartitem::setNullValue($paramQuantity);
@@ -259,7 +259,7 @@ class Cartitem {
 		if ($result->num_rows > 0) {
 			$arr = array();
 			while ($row = $result->fetch_assoc()) {
-				$cartitem = new Cartitem($row['Id'],$row['CardId'],$row['SubscriptionId'],$row['AddDate'],$row['Quantity'],$row['SubscriptionStartDate'],$row['SubscriptionEndDate']);
+				$cartitem = new Cartitem($row['Id'],$row['cartId'],$row['SubscriptionId'],$row['AddDate'],$row['Quantity'],$row['SubscriptionStartDate'],$row['SubscriptionEndDate']);
 				$arr[] = $cartitem;
 			}
 			return $arr;
@@ -268,4 +268,24 @@ class Cartitem {
 			die("The query yielded zero results.No rows found.");
 		}
 	}
+    public static function loadbycartid($paramCartId) {
+        include(self::getDbSettings());
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $stmt = $conn->prepare('CALL usp_cartitem_LoadByCartId(?)');
+        $stmt->bind_param('i', $paramCartId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if (!$result) die($conn->error);
+        if ($result->num_rows > 0) {
+            $arr = array();
+            while ($row = $result->fetch_assoc()) {
+                $cartitem = new Cartitem($row['Id'],$row['cartId'],$row['SubscriptionId'],$row['AddDate'],$row['Quantity'],$row['SubscriptionStartDate'],$row['SubscriptionEndDate']);
+                $arr[] = $cartitem;
+            }
+            return $arr;
+        }
+        else {
+            die("The query yielded zero results.No rows found.");
+        }
+    }
 }

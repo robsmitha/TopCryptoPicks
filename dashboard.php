@@ -58,6 +58,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <div class="row">
                 <div class="col-md-12">
+                    <div class="mb-0 mt-4 text-center">
+                        <i class="fa fa-line-chart"></i> Crytocurrency Percent Changed (1hr, 24hr, 7d)
+                    </div>
+                    <hr class="mt-2">
+                    <div id="line-example" style="height: 250px;"></div>
+                </div>
+                <div class="col-md-12">
                     <div id="cryptoresults">
                         <table id="gridCryptoResults" class='table'>
                         </table>
@@ -65,13 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
                 <div class="col-md-12">
                     <div class="mb-0 mt-4 text-center">
-                        <i class="fa fa-line-chart"></i> Crytocurrency Percent Changed (1hr, 24hr, 7d)
-                    </div>
-                    <hr class="mt-2">
-                    <div id="line-example" style="height: 250px;"></div>
-
-                    <div class="mb-0 mt-4 text-center">
-                        <i class="fa fa-line-chart"></i> Crytocurrency Percent Changed (1hr, 24hr, 7d)
+                        <i class="fa fa-bar-chart"></i> Crytocurrency Prices
                     </div>
                     <hr class="mt-2">
                     <div id="bar-example" style="height: 250px;"></div>
@@ -102,8 +103,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 var linechartdata = [];
                 var barchartdata = [];
                 for (var i in data) {
+                    //gather chart data
                     linechartdata.push({ y: data[i].rank, a: data[i].percent_change_1h , b: data[i].percent_change_24h, c: data[i].percent_change_7d });
                     barchartdata.push({ y: data[i].symbol, a: data[i].price_usd});
+                    //build grid
                     output+="<tr>";
                     output+="<td><a href='view-stock.php?id=" + data[i].rank + "'>" + data[i].name + "</a></td>";
                     output+="<td>" + data[i].symbol + "</td>";
@@ -136,7 +139,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         xhttp.send();
     }
     $( document ).ready(function() {
-        loadData(0,10);
+        loadData(0,25);
         if ($(window).width() < 769) {
             $("#gridCryptoResults").addClass("table-responsive");
         }

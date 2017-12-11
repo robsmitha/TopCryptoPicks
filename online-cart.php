@@ -13,15 +13,13 @@ include "DAL/statustype.php";
 include "DAL/termtype.php";
 include "DAL/cart.php";
 include "DAL/cartitem.php";
+include "DAL/OnlineCart.php";
 include "Utilities/SessionManager.php";
 session_start();
-
-if($_SERVER["REQUEST_METHOD"] == "GET"){
-    if(isset($_GET["id"]) && $_GET["id"] > 0){
-        $id = $_GET["id"];
-        $subscription = new Subscription();
-        $subscription->load($id);
-    }
+$customerId = SessionManager::getCustomerId();
+$cart = Cart::loadbycustomerid($customerId);
+if($cart != null){
+    $cartItemList = OnlineCart::loadbycartid($cart->getId());
 }
 ?>
 
@@ -42,33 +40,62 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                 <h4> <?php  echo $validationMsg; ?> </h4>
             </div>
         <?php } ?>
+
         <div class="row">
             <div class="col-md-12">
-                <table class="table-striped">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
+                <div class="card">
+                    <div class="card-header">
+                        My Cart
+                    </div>
+                    <div>
+                        <table class="table">
+                            <thead class="bg-dark white">
+                            <tr>
+                                <th>Subscription</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Customer</th>
+                                <th>Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            if(!empty($cartItemList)){
+                                foreach ($cartItemList as $c) {
+                                    ?>
+                                    <tr>
+                                        <td class="text-center">
+                                            <img class="d-flex mr-3 mx-auto" style="width: 75px; height: 75px;" src="<?php echo $c->getImgUrl() ?>" alt="<?php echo $c->getSubscription() ?>">
+                                            <?php echo $c->getSubscription() ?>
+                                        </td>
+                                        <td><?php echo $c->getSubscriptionDescription() ?></td>
 
-                    ?>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    </tbody>
-                </table>
+                                        <td>$&nbsp;<?php echo $c->getPrice() ?></td>
+                                        <td><?php echo $c->getStatusType() ?></td>
+                                        <td><?php echo $c->getCustomerName() ?></td>
+                                        <td><?php echo $c->getQuantity() ?></td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <?php if(!empty($cartItemList)) { ?>
+                            <a href="online-checkout.php" class="btn btn-primary btn-lg pull-right">Checkout</a>
+                        <?php } ?>
+                    </div>
+                </div>
             </div>
+        </div>
 
+        <div class="row">
+            <div class="col-md-12">
 
-
+            </div>
         </div>
 
     </div>
