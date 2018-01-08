@@ -1,6 +1,6 @@
-use topcryptopicks;
+use applicationtemplate;
 DELIMITER //
-CREATE PROCEDURE `topcryptopicks`.`usp_cart_LoadByCustomerId`
+CREATE PROCEDURE `applicationtemplate`.`usp_cart_LoadByCustomerId`
 (
 	 IN paramCustomerId INT
 )
@@ -8,11 +8,11 @@ BEGIN
 	SELECT DISTINCT
 		`cart`.`Id` AS `Id`,
 		`cart`.`CustomerId` AS `CustomerId`,
-		`cart`.`StatusTypeId` AS `StatusTypeId`,
+		`cart`.`CartStatusTypeId` AS `CartStatusTypeId`,
 		`cart`.`CreateDate` AS `CreateDate`,
 		`cart`.`CheckoutDate` AS `CheckoutDate`
 	FROM `cart`
 	WHERE 		`cart`.`CustomerId` = paramCustomerId
-	AND `cart`.`StatusTypeId` = 4;  -- active cart
+	AND `cart`.`CheckoutDate` IS NULL;  -- cart has not been checked out yet
 END //
 DELIMITER ;

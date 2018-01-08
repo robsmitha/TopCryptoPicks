@@ -1,3 +1,4 @@
+<?php include "classes.php" ?>
 <?php
 /**
  * Created by PhpStorm.
@@ -5,8 +6,6 @@
  * Date: 12/9/2017
  * Time: 1:04 AM
  */
-session_start();
-include_once("Utilities/Authentication.php");
 $errorMessage = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     isset($_POST["email"]) && $_POST["email"] != "" ? $email = $_POST["email"] : $returnVal = false;
@@ -15,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $success = Authentication::customerLogin($email,$password);
     if ($success)
     {
-        header("location: dashboard.php");
+        header("location: index.php");
     }
     else
     {

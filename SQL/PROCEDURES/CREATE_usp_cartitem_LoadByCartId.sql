@@ -1,19 +1,20 @@
-use topcryptopicks;
+use applicationtemplate;
 DELIMITER //
-CREATE PROCEDURE `topcryptopicks`.`usp_cartitem_LoadByCartId`
+CREATE PROCEDURE `applicationtemplate`.`usp_cartitem_LoadByCartId`
 (
 	 IN paramCartId INT
 )
 BEGIN
 	SELECT
 		`cartitem`.`Id` AS `Id`,
-		`cartitem`.`cartId` AS `cartId`,
-		`cartitem`.`SubscriptionId` AS `SubscriptionId`,
+		`cartitem`.`CartId` AS `CartId`,
+		`cartitem`.`ItemId` AS `ItemId`,
 		`cartitem`.`AddDate` AS `AddDate`,
 		`cartitem`.`Quantity` AS `Quantity`,
-		`cartitem`.`SubscriptionStartDate` AS `SubscriptionStartDate`,
-		`cartitem`.`SubscriptionEndDate` AS `SubscriptionEndDate`
+		`cartitem`.`ItemStartDate` AS `ItemStartDate`,
+		`cartitem`.`ItemEndDate` AS `ItemEndDate`,
+		`cartitem`.`ItemTypeId` AS `ItemTypeId`
 	FROM `cartitem`
-	WHERE 		`cartitem`.`cartId` = paramCartId;
+	WHERE 		`cartitem`.`CartId` = paramCartId;
 END //
 DELIMITER ;

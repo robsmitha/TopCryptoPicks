@@ -1,6 +1,6 @@
-use topcryptopicks;
+use applicationtemplate;
 DELIMITER //
-CREATE PROCEDURE `topcryptopicks`.`usp_securityuser_Lookup`
+CREATE PROCEDURE `applicationtemplate`.`usp_securityuser_Lookup`
 (
 	IN paramUsername VARCHAR(255)
 )

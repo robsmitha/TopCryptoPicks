@@ -214,7 +214,7 @@ class Customer {
 			return $arr;
 		}
 		else {
-			die("The query yielded zero results.No rows found.");
+			//die("The query yielded zero results.No rows found.");
 		}
 	}
 
@@ -222,7 +222,7 @@ class Customer {
 	public static function remove($paramId) {
 		include(self::getDbSettings());
 		$conn = new mysqli($servername, $username, $password, $dbname);
-		$stmt = $conn->prepare('CALL usp_customer_Remove(?)');
+		$stmt = $conn->prepare('CALL usp_customer_Delete(?)');
 		$stmt->bind_param('i', $paramId);
 		$stmt->execute();
 	}
@@ -252,7 +252,7 @@ class Customer {
 			return $arr;
 		}
 		else {
-			die("The query yielded zero results.No rows found.");
+			//die("The query yielded zero results.No rows found.");
 		}
 	}
     public static function lookup($paramEmail) {

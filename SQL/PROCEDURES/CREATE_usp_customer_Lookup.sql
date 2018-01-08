@@ -1,6 +1,6 @@
-use topcryptopicks;
+use applicationtemplate;
 DELIMITER //
-CREATE PROCEDURE `topcryptopicks`.`usp_customer_Lookup`
+CREATE PROCEDURE `applicationtemplate`.`usp_customer_Lookup`
 (
 	IN paramEmail VARCHAR(255)
 )

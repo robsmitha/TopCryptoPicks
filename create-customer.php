@@ -1,6 +1,6 @@
+<?php include "classes.php" ?>
+
 <?php
-
-
 
 /**
  * Created by PhpStorm.
@@ -8,9 +8,6 @@
  * Date: 12/9/2017
  * Time: 1:17 AM
  */
-include "DAL/customer.php";
-include "Utilities/Authentication.php";
-session_start();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $returnVal = true;
@@ -40,11 +37,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $validationMsg = "An error occurred during the creation of this security user. Please try again. If the problem continues, contact OpenDevTools support at opendevtools@gmail.com";
             }
             else {
+                Mailer::sendRegistrationEmail($customer->getEmail());
                 // Set session values for successful login
                 SessionManager::setCustomerId($customer->getId());
                 SessionManager::setFirstName($customer->getFirstName());
                 // Redirect to Dashboard
-                header("location: dashboard.php");
+                header("location: index.php");
             }
         }
     }
@@ -81,27 +79,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <label for="username">First Name</label>
-                                    <input class="form-control" id="firstname" name="firstname" type="text" placeholder="First Name">
+                                    <input class="form-control" id="firstname" name="firstname" type="text" placeholder="First Name" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="username">Last Name</label>
-                                    <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Last Name">
+                                    <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Last Name" required>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="username">Email Address</label>
-                            <input class="form-control" id="email" name="email" type="email" placeholder="Email Address">
+                            <input class="form-control" id="email" name="email" type="email" placeholder="Email Address" required>
                         </div>
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <label for="password">Password</label>
-                                    <input class="form-control" id="password" name="password" type="password" placeholder="Password">
+                                    <input class="form-control" id="password" name="password" type="password" placeholder="Password" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="confirmpassword">Confirm password</label>
-                                    <input class="form-control" id="confirmpassword" name="confirmpassword" type="password" placeholder="Confirm password">
+                                    <input class="form-control" id="confirmpassword" name="confirmpassword" type="password" placeholder="Confirm password" required>
                                 </div>
                             </div>
                         </div>

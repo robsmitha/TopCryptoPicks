@@ -1,3 +1,4 @@
+<?php include "classes.php" ?>
 <?php
 
 
@@ -8,12 +9,8 @@
  * Date: 12/9/2017
  * Time: 1:17 AM
  */
-include "DAL/role.php";
-include "DAL/securityuser.php";
-include "Utilities/Authentication.php";
-session_start();
 if(SessionManager::getSecurityUserId() == 0){
-    header("location: admin-login.php");
+    //header("location: admin-login.php");
 }
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $returnVal = true;
@@ -43,12 +40,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $validationMsg = "An error occurred during the creation of this security user. Please try again. If the problem continues, contact OpenDevTools support at opendevtools@gmail.com";
             }
             else {
+                Mailer::sendRegistrationEmail($securityuser->getEmail());
                 // Set session values for successful login
                 SessionManager::setSecurityUserId($securityuser->getId());
                 SessionManager::setRoleId($securityuser->getRoleId());
                 SessionManager::setUsername($securityuser->getUsername());
                 // Redirect to Dashboard
-                header("location: dashboard.php");
+                header("location: index.php");
             }
         }
     }
@@ -63,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <?php include "head.php" ?>
 
-<body class="bg-light" id="page-top">
+<body class="bg-dark" id="page-top">
 <?php include "navbar.php" ?>
 <div class="container">
     <?php if(isset($validationMsg)) { ?>
@@ -132,6 +130,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div>
 </div>
 
+<?php include "footer.php" ?>
 <?php include "scripts.php" ?>
 
 </body>
