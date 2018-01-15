@@ -66,178 +66,180 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <!-- Navigation -->
 <?php include "navbar.php" ?>
+<div class="content-wrapper">
+    <!-- Page Content -->
+    <div class="container-fluid">
 
-<!-- Page Content -->
-<div class="container">
+        <div class="row">
 
-    <div class="row">
+            <div class="col-lg-3">
+                <h1 class="my-4">Shop Name</h1>
+                <div class="list-group">
+                    <?php
+                    $itemTypeList = Itemtype::loadall();
+                    if(!empty($itemTypeList)){
+                        foreach ($itemTypeList as $itemtype){
+                            if($itemtype->getId() == $item->getItemTypeId()){
+                                ?>
+                                <a href="shop-home.php?id=<?php echo $itemtype->getId() ?>" class="list-group-item active"><?php echo $itemtype->getName() ?></a>
+                                <?php
+                            }
+                            else{
+                                ?>
+                                <a href="shop-home.php?id=<?php echo $itemtype->getId() ?>" class="list-group-item"><?php echo $itemtype->getName() ?></a>
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+            <!-- /.col-lg-3 -->
 
-        <div class="col-lg-3">
-            <h1 class="my-4">Shop Name</h1>
-            <div class="list-group">
-                <?php
-                $itemTypeList = Itemtype::loadall();
-                if(!empty($itemTypeList)){
-                    foreach ($itemTypeList as $itemtype){
-                        if($itemtype->getId() == $item->getItemTypeId()){
+            <div class="col-lg-9">
+                <!--<div id="alertAddedToCart" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>-->
+                <div class="card mt-4">
+                    <a id="<?php echo $item->getId(); ?>" data-toggle="modal" data-target=".bd-example-modal-lg" class="d-block mb-4 h-100" onclick="showdiv(this.id)" title="<?php echo $item->getName(); ?>">
+                        <img id="img<?php echo $item->getId(); ?>" class="card-img-top img-fluid" src="<?php echo $item->getImgUrl() ?>" alt="<?php echo $item->getDescription() ?>">
+                    </a>
+                    <div class="card-body">
+                        <h3 class="card-title"><?php echo $item->getName() ?></h3>
+                        <h4>$<?php echo $item->getPrice() ?></h4>
+                        <p class="card-text"><?php echo $item->getDescription() ?></p>
+
+                        <?php
+                        $i = 0;
+                        while ($i < $item->getRating()){
                             ?>
-                            <a href="shop-home.php?id=<?php echo $itemtype->getId() ?>" class="list-group-item active"><?php echo $itemtype->getName() ?></a>
+                            <span class="text-warning"> &#9733;</span>
                             <?php
+                            $i++;
+                        }
+                        echo $i
+                        ?>
+                        stars
+                        <hr>
+                        <?php if($customerId > 0) {
+                            ?>
+                            <script>
+                                function doValidation() {
+                                    var isValid = true;
+                                    var startdate = $("#ItemStartDate").val();
+                                    var enddate = $("#ItemEndDate").val();
+                                    if(startdate.length > 0){
+                                        $("#ItemStartDate").addClass("is-valid");
+                                        $("#ItemEndDate").addClass("is-valid");
+                                    }
+                                    else {
+                                        isValid = false;
+                                        $("#ItemStartDate").addClass("is-invalid");
+                                        $("#ItemEndDate").addClass("is-invalid");
+                                    }
+                                    if(enddate.length > 0){
+                                        $("#ItemStartDate").addClass("is-valid");
+                                        $("#ItemEndDate").addClass("is-valid");
+                                    }
+                                    else{
+                                        isValid = false;
+                                        $("#ItemStartDate").addClass("is-invalid");
+                                        $("#ItemEndDate").addClass("is-invalid");
+                                    }
+                                    return isValid;
+                                }
+                                function hideAll() {
+                                    $("#divItemStartDate").hide();
+                                    $("#divItemEndDate").hide();
+                                }
+                                $(document).ready(function(){
+                                    hideAll();
+                                    switch (<?php echo $item->getItemTypeId() ?>){
+                                        case 1:
+                                            break;
+                                        case 2:
+                                            $("#divItemStartDate").show();
+                                            $("#divItemEndDate").show();
+                                            break;
+                                        case 3:
+                                            $("#divItemStartDate").show();
+                                            $("#divItemEndDate").show();
+                                            $("#ItemStartDate").attr("disabled", "true");
+                                            $("#ItemEndDate").attr("disabled", "true");
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                });
+                            </script>
+                            <form method="post" onsubmit="if(<?php echo $item->getItemTypeId(); ?> == 2) return doValidation()">
+                                <input type="hidden" name="hfItemId" value="<?php echo $item->getId(); ?>">
+                                <input type="hidden" name="hfItemTypeId" value="<?php echo $item->getItemTypeId(); ?>">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="input-group" id="divItemStartDate">
+                                            <div class="input-group-addon">Start Date</div>
+                                            <input type="date" name="ItemStartDate" id="ItemStartDate" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group" id="divItemEndDate">
+                                            <div class="input-group-addon">End Date</div>
+                                            <input type="date" name="ItemEndDate" id="ItemEndDate" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="addToCart();return false;"><i class="icon-plus"></i> Add</button>
+                                    <button type="submit" name="btnAddToCart" id="btnAddToCart" class="btn btn-default"><i class="icon-arrow-right-circle"></i> Add & Checkout</button>
+                                </div>
+                            </form>
+                        <?php
                         }
                         else{
-                            ?>
-                            <a href="shop-home.php?id=<?php echo $itemtype->getId() ?>" class="list-group-item"><?php echo $itemtype->getName() ?></a>
+                        ?>
+                            <a class="btn btn-primary pull-right" href="login.php"><i class="icon-login"></i> Login</a>
                             <?php
                         }
-                    }
-                }
-                ?>
-            </div>
-        </div>
-        <!-- /.col-lg-3 -->
-
-        <div class="col-lg-9">
-            <!--<div id="alertAddedToCart" class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>-->
-            <div class="card mt-4">
-                <a id="<?php echo $item->getId(); ?>" data-toggle="modal" data-target=".bd-example-modal-lg" class="d-block mb-4 h-100" onclick="showdiv(this.id)" title="<?php echo $item->getName(); ?>">
-                    <img id="img<?php echo $item->getId(); ?>" class="card-img-top img-fluid" src="<?php echo $item->getImgUrl() ?>" alt="<?php echo $item->getDescription() ?>">
-                </a>
-                <div class="card-body">
-                    <h3 class="card-title"><?php echo $item->getName() ?></h3>
-                    <h4>$<?php echo $item->getPrice() ?></h4>
-                    <p class="card-text"><?php echo $item->getDescription() ?></p>
-
-                    <?php
-                    $i = 0;
-                    while ($i < $item->getRating()){
                         ?>
-                        <span class="text-warning"> &#9733;</span>
-                        <?php
-                        $i++;
-                    }
-                    echo $i
-                    ?>
-                    stars
-                    <hr>
-                    <?php if($customerId > 0) {
-                        ?>
-                        <script>
-                            function doValidation() {
-                                var isValid = true;
-                                var startdate = $("#ItemStartDate").val();
-                                var enddate = $("#ItemEndDate").val();
-                                if(startdate.length > 0){
-                                    $("#ItemStartDate").addClass("is-valid");
-                                    $("#ItemEndDate").addClass("is-valid");
-                                }
-                                else {
-                                    isValid = false;
-                                    $("#ItemStartDate").addClass("is-invalid");
-                                    $("#ItemEndDate").addClass("is-invalid");
-                                }
-                                if(enddate.length > 0){
-                                    $("#ItemStartDate").addClass("is-valid");
-                                    $("#ItemEndDate").addClass("is-valid");
-                                }
-                                else{
-                                    isValid = false;
-                                    $("#ItemStartDate").addClass("is-invalid");
-                                    $("#ItemEndDate").addClass("is-invalid");
-                                }
-                                return isValid;
-                            }
-                            function hideAll() {
-                                $("#divItemStartDate").hide();
-                                $("#divItemEndDate").hide();
-                            }
-                            $(document).ready(function(){
-                                hideAll();
-                                switch (<?php echo $item->getItemTypeId() ?>){
-                                    case 1:
-                                        break;
-                                    case 2:
-                                        $("#divItemStartDate").show();
-                                        $("#divItemEndDate").show();
-                                        break;
-                                    case 3:
-                                        $("#divItemStartDate").show();
-                                        $("#divItemEndDate").show();
-                                        $("#ItemStartDate").attr("disabled", "true");
-                                        $("#ItemEndDate").attr("disabled", "true");
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            });
-                        </script>
-                        <form method="post" onsubmit="if(<?php echo $item->getItemTypeId(); ?> == 2) return doValidation()">
-                            <input type="hidden" name="hfItemId" value="<?php echo $item->getId(); ?>">
-                            <input type="hidden" name="hfItemTypeId" value="<?php echo $item->getItemTypeId(); ?>">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="input-group" id="divItemStartDate">
-                                        <div class="input-group-addon">Start Date</div>
-                                        <input type="date" name="ItemStartDate" id="ItemStartDate" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="input-group" id="divItemEndDate">
-                                        <div class="input-group-addon">End Date</div>
-                                        <input type="date" name="ItemEndDate" id="ItemEndDate" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="btn-group">
-                                <button class="btn btn-primary" onclick="addToCart();return false;"><i class="icon-plus"></i> Add</button>
-                                <button type="submit" name="btnAddToCart" id="btnAddToCart" class="btn btn-default"><i class="icon-arrow-right-circle"></i> Add & Checkout</button>
-                            </div>
-                        </form>
-                    <?php
-                    }
-                    else{
-                    ?>
-                        <a class="btn btn-primary pull-right" href="login.php"><i class="icon-login"></i> Login</a>
-                        <?php
-                    }
-                    ?>
 
+                    </div>
                 </div>
-            </div>
-            <!-- /.card -->
+                <!-- /.card -->
 
-            <div class="card card-outline-secondary my-4">
-                <div class="card-header">
-                    Product Reviews
+                <div class="card card-outline-secondary my-4">
+                    <div class="card-header">
+                        Product Reviews
+                    </div>
+                    <div class="card-body">
+                        <h4>Coming Soon!</h4>
+                        <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+                        <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                        <hr>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+                        <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                        <hr>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+                        <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                        <hr>
+                        <a href="#" class="btn btn-success">Leave a Review</a>-->
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h4>Coming Soon!</h4>
-                    <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <hr>
-                    <a href="#" class="btn btn-success">Leave a Review</a>-->
-                </div>
+                <!-- /.card -->
+
             </div>
-            <!-- /.card -->
+            <!-- /.col-lg-9 -->
 
         </div>
-        <!-- /.col-lg-9 -->
 
     </div>
-
+    <!-- /.container -->
 </div>
-<!-- /.container -->
+
 
 <!-- Footer -->
 <?php include "footer.php" ?>

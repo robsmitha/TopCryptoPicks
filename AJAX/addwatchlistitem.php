@@ -26,5 +26,8 @@ if($customerId > 0){
             $watchlistitem = new Watchlistitem(0,$name,$symbol,$watchlist->getId(),$currentDate);
             $watchlistitem->save();
         }
+        $name = $watchlistitem->getName();
+        $symbol = $watchlistitem->getSymbol();
+        echo "<a id='$symbol' class=\"dropdown-item\" href=\"view-stock.php?name=$name\">$symbol</a>";
     }
 }

@@ -53,110 +53,112 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <!-- Navigation -->
 <?php include "navbar.php" ?>
+<div class="content-wrapper">
+    <!-- Page Content -->
+    <div class="container-fluid">
 
-<!-- Page Content -->
-<div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <h1 class="mt-4 mb-3">Contact
+            <small>Lets make it happen</small>
+        </h1>
 
-    <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">Contact
-        <small>Lets make it happen</small>
-    </h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index.php">Home</a>
+            </li>
+            <li class="breadcrumb-item active">Contact</li>
+        </ol>
 
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="index.php">Home</a>
-        </li>
-        <li class="breadcrumb-item active">Contact</li>
-    </ol>
-
-    <!-- Content Row -->
-    <div class="row">
-        <!-- Map Column -->
-        <div class="col-lg-8 mb-4">
-            <h3>Send us a Message</h3>
-            <form name="contactForm" id="contactForm" method="post">
-                <?php if ($errors != ""){
-                    echo "<div id=\"failure\"><div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><strong>" . $errors . "</strong></div></div>";
-                }
-                ?>
-                <div class="control-group form-group">
-                    <div class="controls">
-                        <label>Full Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" required
-                               data-validation-required-message="Please enter your name.">
-                        <p class="help-block"></p>
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Map Column -->
+            <div class="col-lg-8 mb-4">
+                <h3>Send us a Message</h3>
+                <form name="contactForm" id="contactForm" method="post">
+                    <?php if ($errors != ""){
+                        echo "<div id=\"failure\"><div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><strong>" . $errors . "</strong></div></div>";
+                    }
+                    ?>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label>Full Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required
+                                   data-validation-required-message="Please enter your name.">
+                            <p class="help-block"></p>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group form-group">
-                    <div class="controls">
-                        <label>Phone Number:</label><small> (optional)</small>
-                        <input type="tel" class="form-control" id="phone" name="phone">
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label>Phone Number:</label><small> (optional)</small>
+                            <input type="tel" class="form-control" id="phone" name="phone">
+                        </div>
                     </div>
-                </div>
-                <div class="control-group form-group">
-                    <div class="controls">
-                        <label>Email Address:</label>
-                        <input type="email" class="form-control" id="email" name="email" required
-                               data-validation-required-message="Please enter your email address.">
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label>Email Address:</label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                   data-validation-required-message="Please enter your email address.">
+                        </div>
                     </div>
-                </div>
-                <div class="control-group form-group">
-                    <div class="controls">
-                        <label>Message:</label>
-                        <textarea rows="10" cols="100" class="form-control" id="message" name="message" required
-                                  data-validation-required-message="Please enter your message" maxlength="999"
-                                  style="resize:none"></textarea>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label>Message:</label>
+                            <textarea rows="10" cols="100" class="form-control" id="message" name="message" required
+                                      data-validation-required-message="Please enter your message" maxlength="999"
+                                      style="resize:none"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div id="success"></div>
+                    <div id="success"></div>
 
-                <?php if ($mailSent): ?>
-                    <div id="success"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Your message has been sent. </strong></div></div>
-                <?php endif ?>
-                <!-- For success/fail messages -->
-                <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
+                    <?php if ($mailSent): ?>
+                        <div id="success"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Your message has been sent. </strong></div></div>
+                    <?php endif ?>
+                    <!-- For success/fail messages -->
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+            <!-- Contact Details Column -->
+            <div class="col-lg-4 mb-4">
+                <h3>Contact Details</h3>
+                <p>
+                    <abbr title="Phone">P</abbr>: (727) 432-3457
+                </p>
+                <p>
+                    <abbr title="Email">E</abbr>:
+                    <a href="mailto:wmcmailer@gmail.com">wmcmailer@gmail.com
+                    </a>
+                </p>
+                <br/><br/><br/>
+                <p>Do you have questions about our services or software? Send us an email! We would be happy to address any inquiries, issues, or feedback that you may have.</p>
+                <p>Email: <a href="mailto:wmcmailer@gmail.com">wmcmailer@gmail.com</a></p>
+                <p>You can also contact us by using the form on this page.</p>
+            </div>
         </div>
-        <!-- Contact Details Column -->
-        <div class="col-lg-4 mb-4">
-            <h3>Contact Details</h3>
-            <p>
-                <abbr title="Phone">P</abbr>: (727) 432-3457
-            </p>
-            <p>
-                <abbr title="Email">E</abbr>:
-                <a href="mailto:wmcmailer@gmail.com">wmcmailer@gmail.com
-                </a>
-            </p>
-            <br/><br/><br/>
-            <p>Do you have questions about our services or software? Send us an email! We would be happy to address any inquiries, issues, or feedback that you may have.</p>
-            <p>Email: <a href="mailto:wmcmailer@gmail.com">wmcmailer@gmail.com</a></p>
-            <p>You can also contact us by using the form on this page.</p>
-        </div>
-    </div>
-    <!-- /.row -->
+        <!-- /.row -->
 
-    <!-- Contact Form -->
-    <!-- In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
-    <!-- Content Row -->
-    <div class="row d-none">
         <!-- Contact Form -->
-        <div class="col-lg-8 mb-4">
-            <!-- Embedded Google Map -->
-            <iframe width="100%" height="400px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?hl=en&amp;ie=UTF8&amp;ll=37.0625,-95.677068&amp;spn=56.506174,79.013672&amp;t=m&amp;z=4&amp;output=embed"></iframe>
+        <!-- In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
+        <!-- Content Row -->
+        <div class="row d-none">
+            <!-- Contact Form -->
+            <div class="col-lg-8 mb-4">
+                <!-- Embedded Google Map -->
+                <iframe width="100%" height="400px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?hl=en&amp;ie=UTF8&amp;ll=37.0625,-95.677068&amp;spn=56.506174,79.013672&amp;t=m&amp;z=4&amp;output=embed"></iframe>
+            </div>
+            <!-- Contact Details Column -->
+            <div class="col-lg-4 mb-4">
+                <br/><br/><br/>
+                <p>Do you have questions about our services or software? Send us an email! We would be happy to address any inquiries, issues, or feedback that you may have.</p>
+                <p>Email: <a href="mailto:wmcmailer@gmail.com">wmcmailer@gmail.com</a></p>
+                <p>You can also contact us by using the form on this page.</p>
+            </div>
         </div>
-        <!-- Contact Details Column -->
-        <div class="col-lg-4 mb-4">
-            <br/><br/><br/>
-            <p>Do you have questions about our services or software? Send us an email! We would be happy to address any inquiries, issues, or feedback that you may have.</p>
-            <p>Email: <a href="mailto:wmcmailer@gmail.com">wmcmailer@gmail.com</a></p>
-            <p>You can also contact us by using the form on this page.</p>
-        </div>
-    </div>
-    <!-- /.row -->
+        <!-- /.row -->
 
+    </div>
+    <!-- /.container -->
 </div>
-<!-- /.container -->
+
 
 <!-- Footer -->
 <?php include "footer.php" ?>

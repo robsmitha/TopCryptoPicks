@@ -27,3 +27,6 @@ body {
 .portfolio-item {
   margin-bottom: 30px;
 }
+.scroll-to-top {
+  bottom: 25px;
+}

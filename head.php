@@ -10,8 +10,7 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap theme from bootswatch -->
-    <link href="css/theme.css" rel="stylesheet">
-
+    <link href="css/sb-admin.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
 
@@ -22,6 +21,16 @@
 
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110090520-4"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-110090520-4');
+	</script>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
@@ -90,14 +99,12 @@
         body {
             position: relative;
             margin: 0;
-            padding-top: 60px;
+            padding-top: 50px;
             min-height: 100%;
             padding-bottom: 155px !important;
         }
 
-        .content-wrapper {
-            margin: 0 auto;
-        }
+
         /* Footer Styles */
         .footer {
             position: absolute;

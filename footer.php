@@ -30,13 +30,13 @@
         }
         ?>
 
-        <p class="text-muted small mb-0">Copyright &copy; Application Template <?php echo date("Y"); ?></p>
+        <p class="text-muted small mb-0">Copyright &copy; Top Crypto Picks <?php echo date("Y"); ?></p>
         <small>Powered by <a href="http://webmediaconcepts.com/">Web Media Concepts</a></small>
         <br>
     </div>
 </footer>
 
-<!-- Scroll to Top Button
-<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
     <i class="fa fa-angle-up"></i>
-</a>-->
+</a>

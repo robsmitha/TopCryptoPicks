@@ -36,107 +36,109 @@ $customer = new Customer($order->getCustomerId());
 
 <!-- Navigation -->
 <?php include "navbar.php" ?>
+<div class="content-wrapper">
+    <!-- Page Content -->
+    <div class="container-fluid">
 
-<!-- Page Content -->
-<div class="container">
-
-    <h1 class="mt-4 mb-3">View Order ID: <?php echo $order->getId() ?></h1>
+        <h1 class="mb-3">View Order ID: <?php echo $order->getId() ?></h1>
 
 
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="index.php">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="customer-profile.php"><?php echo $customer->getFirstName()." ".$customer->getLastName() ?></a>
-        </li>
-        <li class="breadcrumb-item active">View Order ID: <?php echo $order->getId() ?></li>
-    </ol>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index.php">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="customer-profile.php"><?php echo $customer->getFirstName()." ".$customer->getLastName() ?></a>
+            </li>
+            <li class="breadcrumb-item active">View Order ID: <?php echo $order->getId() ?></li>
+        </ol>
 
-    <div class="row">
+        <div class="row">
 
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Order Details
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <b>Order ID: </b>
-                            <?php echo $order->getId() ?>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Order Details
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b>Order ID: </b>
+                                <?php echo $order->getId() ?>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Customer ID: </b>
+                                <?php echo $order->getCustomerId() ?>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Order Status: </b>
+                                <?php echo $order->getOrderStatusTypeId() ?>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <b>Customer ID: </b>
-                            <?php echo $order->getCustomerId() ?>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b>Amount: </b>
+                                <?php echo "$".number_format(($order->getStripeAmount()/100),2) ?>
+                            </div>
+                            <div class="col-md-8">
+                                <b>Order Date: </b><?php echo date_format(date_create($order->getOrderDate()), 'g:ia \o\n l jS F Y') ?>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <b>Order Status: </b>
-                            <?php echo $order->getOrderStatusTypeId() ?>
+                        <br>
+                        <div class="row d-none">
+                            <div class="col-md-4">
+                                <b>Stripe Customer: </b><br>
+                                <?php echo $order->getStripeCustomer() ?>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Stripe Card: </b><br>
+                                <?php echo $order->getStripeCard() ?>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Stripe Charge: </b><br>
+                                <?php echo $order->getStripeCharge() ?>
+                            </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <b>Amount: </b>
-                            <?php echo "$".number_format(($order->getStripeAmount()/100),2) ?>
-                        </div>
-                        <div class="col-md-8">
-                            <b>Order Date: </b><?php echo date_format(date_create($order->getOrderDate()), 'g:ia \o\n l jS F Y') ?>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row d-none">
-                        <div class="col-md-4">
-                            <b>Stripe Customer: </b><br>
-                            <?php echo $order->getStripeCustomer() ?>
-                        </div>
-                        <div class="col-md-4">
-                            <b>Stripe Card: </b><br>
-                            <?php echo $order->getStripeCard() ?>
-                        </div>
-                        <div class="col-md-4">
-                            <b>Stripe Charge: </b><br>
-                            <?php echo $order->getStripeCharge() ?>
-                        </div>
-                    </div>
-                </div>
-                <table class="table">
-                    <thead class="bg-secondary">
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                    <table class="table">
+                        <thead class="bg-light">
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                    <?php
-                    if(!empty($orderItemList)){
-                        $totalprice = 0;
-                        foreach ($orderItemList as $orderitem){
-                            $item = new Item($orderitem->getItemId());
-                            $totalprice += $item->getPrice();
-                            ?>
-                            <tr>
-                                <th><?php echo $item->getName() ?></th>
-                                <th><?php echo $orderitem->getQuantity() ?></th>
-                                <th><?php echo "$".$item->getPrice().".00" ?></th>
-                            </tr>
-                            <?php
+                        <?php
+                        if(!empty($orderItemList)){
+                            $totalprice = 0;
+                            foreach ($orderItemList as $orderitem){
+                                $item = new Item($orderitem->getItemId());
+                                $totalprice += $item->getPrice();
+                                ?>
+                                <tr>
+                                    <th><?php echo $item->getName() ?></th>
+                                    <th><?php echo $orderitem->getQuantity() ?></th>
+                                    <th><?php echo "$".$item->getPrice().".00" ?></th>
+                                </tr>
+                                <?php
+                            }
                         }
-                    }
-                    ?>
-                    </tbody>
-                </table>
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
+        <!-- /.row -->
 
     </div>
-    <!-- /.row -->
-
+    <!-- /.container -->
 </div>
-<!-- /.container -->
+
 
 <!-- Footer -->
 <?php include "footer.php" ?>
