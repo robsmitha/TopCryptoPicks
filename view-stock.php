@@ -143,10 +143,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
             <?php } ?>
             <!-- Page Heading/Breadcrumbs -->
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-lg-9 col-md-6">
                     <h1 id="lblName" class="mb-3"></h1>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <?php
                     if($CustomerId > 0){
                         ?>

@@ -199,7 +199,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                         ?>
                     </form>
                     <div class="text-center">
-                        <a class="d-block small mt-3" href="shop-home.php">Cancel</a>
+                        <a class="d-block small mt-3" href="admin-home.php">Cancel</a>
                     </div>
                 </div>
             </div>

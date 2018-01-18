@@ -19,14 +19,14 @@
             </li>
             <li class="nav-item" title="Dashboard">
                 <a class="nav-link" href="index.php">
-                    <i class="fa fa-fw fa-line-chart"></i>
-                    <span class="nav-link-text">Stocks</span>
+                    <i class="icon-graph"></i>
+                    <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
             <?php
             if(SessionManager::getCustomerId() > 0){
                 ?>
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a class="nav-link" href="online-cart.php"><i class="icon-basket"></i> Cart
                         <span id="cartCounter" class="badge badge-pill badge-primary">
                                 <?php
@@ -44,6 +44,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="customer-profile.php"><i class="icon-user"></i> Profile</a>
+                </li>
+            <?php
+            }
+            else if(SessionManager::getSecurityUserId() > 0){
+                ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin-home.php"><i class="icon-lock"></i> Administration</a>
                 </li>
             <?php
             }
@@ -69,9 +76,6 @@
         <ul class="navbar-nav ml-auto">
             <?php if(SessionManager::getSecurityUserId() > 0 ) {
                 ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin-home.php"><i class="icon-lock"></i> Administration</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout.php"><i class="icon-logout"></i> Logout</a>
                 </li>

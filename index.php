@@ -58,13 +58,6 @@ include_once("classes.php");
 </div>
 
 <script>
-    $(document).ready(function(){
-        $('#button').click(function(){
-
-        });//end of submit
-    });//end of ready
-</script>
-<script>
     function loadData(startindex, limit) {
         $.ajax({
             type: 'GET',

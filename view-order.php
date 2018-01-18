@@ -48,7 +48,7 @@ $customer = new Customer($order->getCustomerId());
                 <a href="index.php">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="customer-profile.php"><?php echo $customer->getFirstName()." ".$customer->getLastName() ?></a>
+                <a href="customer-profile.php"><?php echo ucfirst($customer->getFirstName())." ".ucfirst($customer->getLastName()); ?></a>
             </li>
             <li class="breadcrumb-item active">View Order ID: <?php echo $order->getId() ?></li>
         </ol>

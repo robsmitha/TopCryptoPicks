@@ -19,13 +19,13 @@ if(SessionManager::getSecurityUserId() == 0){
     <div class="container-fluid">
 
         <!-- Page Heading/Breadcrumbs -->
-        <h1 class="mt-4 mb-3">Hello, <?php echo SessionManager::getUsername() ?></h1>
+        <h1 class="mb-3">Hello, <?php echo SessionManager::getUsername() ?></h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="index.php">Home</a>
+                <a href="index.php"><i class="icon-graph"></i> Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Administration</li>
+            <li class="breadcrumb-item active">Contact</li>
         </ol>
         <div class="row">
             <div class="col-sm-4">

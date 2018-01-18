@@ -18,6 +18,15 @@ if($cart != null){
 <div class="content-wrapper">
     <!-- Page Content -->
     <div class="container-fluid">
+        <!-- Page Heading/Breadcrumbs -->
+        <h1 class="mb-3">Online Cart</h1>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index.php">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Online Cart</li>
+        </ol>
         <?php if(isset($validationMsg)) { ?>
             <div class="alert alert-danger alert-dismissible fade show mx-auto mt-5" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,7 +38,7 @@ if($cart != null){
 
         <div class="row">
             <div class="col-md-12">
-                <div class="card mt-4">
+                <div class="card">
                     <div class="card-header">
                         My Cart
                     </div>
